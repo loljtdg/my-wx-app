@@ -1,0 +1,110 @@
+/* miniprogram/pages/selectRestaurant.wxss */
+.container{
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.get-box{
+  margin: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.button{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  border: 1px #333333 solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.restaurant{
+  margin-top: 40rpx;
+  color: red;
+}
+.getting{
+  color: #999999;
+}
+
+.restaurant-cell{
+  width: 670rpx;
+  padding: 20rpx 0;
+  margin: 0 40rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px #cccccc solid;
+}
+
+.restaurant-cell:last-child{
+  border-bottom-width: 0;
+}
+
+.restaurant-cell-allSelected {
+  width: 670rpx;
+  padding: 20rpx 40rpx;
+  margin: 0;
+  border-bottom: 1px #cccccc solid;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.left{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.del{
+  color: red;
+  font-size: 24rpx;
+}
+.add{
+  font-size: 28rpx;
+}
+
+
+.add-modal{
+  position: fixed;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #99999930;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content{
+  background-color: #ffffff;
+  width: 500rpx;
+  padding: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.title{
+  margin-bottom: 40rpx;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+.input{
+  padding: 10rpx;
+  border: 1px #cccccc solid;
+  border-radius: 10rpx;
+}
+.button-row{
+  margin-top: 40rpx;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
