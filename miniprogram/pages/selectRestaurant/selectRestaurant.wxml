@@ -40,11 +40,13 @@
   <view class="modal-content">
     <text class="title">添加餐厅</text>
     <form bindsubmit="onformSubmit">
-      <input class="input" name="name" auto-focus placeholder="请输入餐厅名称" />
+      <input class="input"  name="name" auto-focus placeholder="请输入餐厅名称" />
       <view class="button-row">
         <button formType="submit" type="primary" size="mini">确定</button>
-        <button class="add-button" size="mini" bindtap="onCloseModal">取消</button>
+        <button class="add-button" bindfocus="onFocus" bindblur="onBlur" size="mini" bindtap="onCloseModal">取消</button>
       </view>
     </form>
+  </view>
+  <view class="text-input-position">
   </view>
 </view>

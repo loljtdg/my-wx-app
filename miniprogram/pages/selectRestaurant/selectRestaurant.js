@@ -127,6 +127,13 @@ Page({
       })
       return;
     }
+    if (this.data.getting){
+      wx.showToast({
+        icon: 'none',
+        title: '正在进行中'
+      })
+      return;
+    }
     let num = 0;
     let timeout = 100;
     const timeFunc = () => setTimeout(() => {

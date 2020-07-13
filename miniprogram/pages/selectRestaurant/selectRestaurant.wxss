@@ -23,10 +23,13 @@
 }
 .restaurant{
   margin-top: 40rpx;
-  color: red;
+  font-size: 38rpx;
+  color: #07C160;
+  font-weight: bold;
 }
 .getting{
   color: #999999;
+  font-weight: inherit;
 }
 
 .restaurant-cell{
@@ -78,17 +81,23 @@
   background: #99999930;
   z-index: 99;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 .modal-content{
   background-color: #ffffff;
   width: 500rpx;
+  height: 350rpx;
+  border-radius: 20rpx;
   padding: 30rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.text-input-position{
+  height: 20%;
 }
 .title{
   margin-bottom: 40rpx;
