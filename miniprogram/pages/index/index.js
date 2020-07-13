@@ -34,18 +34,18 @@ Page({
             }
           })
         }else{
-          this.getUserInfo();
+          // this.getUserInfo();
         }
       },
       fail: ()=>{
-        this.getUserInfo();
+        // this.getUserInfo();
       }
     });
 
     this.getOpenid();
   },
 
-  getUserInfo: function(e) {
+  onGetUserInfo: function(e) {
     if (!this.data.logged && e.detail.userInfo) {
       this.setData({
         logged: true,
