@@ -1,52 +1,60 @@
 <!-- miniprogram/pages/selectRestaurant.wxml -->
 <view class="container">
-  <view class="get-box">
-    <view class="button" bindtap="onGetRestaurant">开始</view>
-    <view class="restaurant {{getting?'getting':''}}" wx:if="{{restaurant}}">
-      {{restaurant}}
-    </view>
-  </view>
-  <view class="restaurant-list">
-    <checkbox-group bindchange="onSelectRestaurantAll">
-      <view class="restaurant-cell-allSelected" wx:key="allSelected">
-        <label class="left">
-          <view class="restaurant-cell__checkbox">
-            <checkbox value="allSelected" checked="{{allSelected}}" />
-          </view>
-          <view class="restaurant-cell__name">全选</view>
-        </label>
-        <view class="right">
-          <view class="add" bindtap="onAddRestaurant">添加</view>
-        </view>
-      </view>
-    </checkbox-group>
-    <checkbox-group bindchange="onSelectRestaurant">
-      <view class="restaurant-cell" wx:for="{{restaurantList}}" wx:key="index">
-        <label class="left">
-          <view class="restaurant-cell__checkbox">
-            <checkbox value="{{item._id}}" checked="{{!item.unSelected}}" />
-          </view>
-          <view class="restaurant-cell__name">{{item.name}}</view>
-        </label>
-        <view class="right">
-          <view class="del" bindtap="delRestaurant" data-id="{{item._id}}">删除</view>
-        </view>
-      </view>
-    </checkbox-group>
-  </view>
+	<view class="get-box">
+		<view class="button" bindtap="onGetRestaurant">开始</view>
+		<view class="restaurant {{getting?'getting':''}}" wx:if="{{restaurant}}">
+			{{restaurant}}
+		</view>
+	</view>
+	<view class="restaurant-list-type">
+		<view class="restaurant-list-type-title {{listType?'':'switched'}}">我的列表</view>
+		<view class="restaurant-list-switch-view">
+			<switch checked="{{listType}}" bindchange="listTypeChange" />
+		</view>
+    <view class="restaurant-list-type-title {{listType?'switched':''}}">公共列表</view>
+	</view>
+	<view class="restaurant-list">
+		<checkbox-group bindchange="onSelectRestaurantAll">
+			<view class="restaurant-cell-allSelected" wx:key="allSelected">
+				<label class="left">
+					<view class="restaurant-cell__checkbox">
+						<checkbox value="allSelected" checked="{{allSelected}}" />
+					</view>
+					<view class="restaurant-cell__name">全选</view>
+				</label>
+				<view class="right">
+					<view class="add" bindtap="onAddRestaurant">添加</view>
+				</view>
+			</view>
+		</checkbox-group>
+
+		<checkbox-group bindchange="onSelectRestaurant">
+			<view class="restaurant-cell" wx:for="{{restaurantList}}" wx:key="index">
+				<label class="left">
+					<view class="restaurant-cell__checkbox">
+						<checkbox value="{{item._id}}" checked="{{!item.unSelected}}" />
+					</view>
+					<view class="restaurant-cell__name">{{item.name}}</view>
+				</label>
+				<view class="right">
+					<view class="del" bindtap="delRestaurant" data-id="{{item._id}}">删除</view>
+				</view>
+			</view>
+		</checkbox-group>
+	</view>
 </view>
 
 <view wx:if="{{modalShow}}" class="add-modal">
-  <view class="modal-content">
-    <text class="title">添加餐厅</text>
-    <form bindsubmit="onformSubmit">
-      <input class="input"  name="name" auto-focus placeholder="请输入餐厅名称" />
-      <view class="button-row">
-        <button formType="submit" type="primary" size="mini">确定</button>
-        <button class="add-button" bindfocus="onFocus" bindblur="onBlur" size="mini" bindtap="onCloseModal">取消</button>
-      </view>
-    </form>
-  </view>
-  <view class="text-input-position">
-  </view>
+	<view class="modal-content">
+		<text class="title">添加餐厅</text>
+		<form bindsubmit="onformSubmit">
+			<input class="input" name="name" auto-focus placeholder="请输入餐厅名称" />
+			<view class="button-row">
+				<button formType="submit" type="primary" size="mini">确定</button>
+				<button class="add-button" bindfocus="onFocus" bindblur="onBlur" size="mini" bindtap="onCloseModal">取消</button>
+			</view>
+		</form>
+	</view>
+	<view class="text-input-position">
+	</view>
 </view>

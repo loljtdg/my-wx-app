@@ -66,23 +66,31 @@ page {
 .box-container {
   flex: 1;
   display: flex;
-  width: 100%;
-  margin-top: 60rpx;
+  width: 690rpx;
+  margin: 60rpx 30rpx;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-betweens;
   align-items: center;
+  background-color: #fff;
+  border-radius: 40rpx;
 }
 
 .box {
-  background-color: #999999;
-  width: 250rpx;
-  height: 250rpx;
+  width: 230rpx;
+  height: 230rpx;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-right: 1px solid #f6f6f6;
+  border-bottom: 1px solid #f6f6f6;
 }
+.no-border-right {
+  border-right-width: 0px;
+}
+
 .box-text {
-  color: #fff;
+  color: #333;
   font-size: 36rpx;
 }

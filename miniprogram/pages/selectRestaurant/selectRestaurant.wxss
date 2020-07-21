@@ -1,17 +1,18 @@
 /* miniprogram/pages/selectRestaurant.wxss */
-.container{
+.container {
   min-height: 100vh;
   background-color: #ffffff;
 }
 
-.get-box{
+.get-box {
   margin: 40rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.button{
+
+.button {
   width: 120rpx;
   height: 120rpx;
   border-radius: 60rpx;
@@ -21,18 +22,42 @@
   justify-content: center;
   font-weight: bold;
 }
-.restaurant{
+
+.restaurant {
   margin-top: 40rpx;
   font-size: 38rpx;
   color: #07C160;
   font-weight: bold;
 }
-.getting{
+
+.getting {
   color: #999999;
   font-weight: inherit;
 }
 
-.restaurant-cell{
+.restaurant-list-type {
+  padding: 40rpx 40rpx 10rpx 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.restaurant-list-type-title {
+  font-size: medium;
+  color: #999999;
+}
+
+.switched {
+  color: #04BE02;
+}
+
+.restaurant-list-switch-view {
+  margin: 0 20rpx;
+}
+
+.restaurant-cell {
   width: 670rpx;
   padding: 20rpx 0;
   margin: 0 40rpx;
@@ -43,7 +68,7 @@
   border-bottom: 1px #cccccc solid;
 }
 
-.restaurant-cell:last-child{
+.restaurant-cell:last-child {
   border-bottom-width: 0;
 }
 
@@ -57,24 +82,27 @@
   justify-content: space-between;
   align-items: center;
 }
-.left{
+
+.left {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 }
-.del{
+
+.del {
   color: red;
   font-size: 24rpx;
 }
-.add{
+
+.add {
   font-size: 28rpx;
 }
 
 
-.add-modal{
+.add-modal {
   position: fixed;
-  top:0;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -85,7 +113,8 @@
   justify-content: center;
   align-items: center;
 }
-.modal-content{
+
+.modal-content {
   background-color: #ffffff;
   width: 500rpx;
   height: 350rpx;
@@ -96,20 +125,24 @@
   justify-content: center;
   align-items: center;
 }
-.text-input-position{
+
+.text-input-position {
   height: 20%;
 }
-.title{
+
+.title {
   margin-bottom: 40rpx;
   font-size: 34rpx;
   font-weight: bold;
 }
-.input{
+
+.input {
   padding: 10rpx;
   border: 1px #cccccc solid;
   border-radius: 10rpx;
 }
-.button-row{
+
+.button-row {
   margin-top: 40rpx;
   display: flex;
   width: 100%;

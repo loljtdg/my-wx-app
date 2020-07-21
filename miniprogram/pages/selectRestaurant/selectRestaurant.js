@@ -1,4 +1,5 @@
 // miniprogram/pages/selectRestaurant.js
+const app = getApp()
 
 const GetRestaurantNum = 20;
 
@@ -13,12 +14,17 @@ Page({
     restaurant: '',
     allSelected: true,
     modalShow: false,
+    listType: 0, //0-私有列表 1-公共列表
   },
-
+  restaurantTableName: '',
+  privateRestaurantTableName: '',
+  publicRestaurantTableName: 'restaurant',
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.privateRestaurantTableName = app.globalData.openid ? ('restaurant_private_' + app.globalData.openid) : '';
+    this.restaurantTableName = this.privateRestaurantTableName;
     this.getRestaurantList();
   },
 
@@ -31,31 +37,74 @@ Page({
 
   // 获取数据
   getRestaurantList: function () {
-    const db = wx.cloud.database()
+    const db = wx.cloud.database();
+
+    wx.showLoading({
+      title: '加载中',
+    })
+
     // 查询所有的Restaurant
-    db.collection('restaurant').get({
+    db.collection(this.restaurantTableName).get({
       success: res => {
         this.setData({
           restaurantList: res.data,
           allSelected: true
         })
         console.log('[restaurant] 查询成功: ', res.data)
+        wx.hideLoading();
       },
       fail: err => {
-        wx.showToast({
-          icon: 'none',
-          title: '查询失败'
+        this.setData({
+          restaurantList: []
         })
+        // wx.showToast({
+        //   icon: 'none',
+        //   title: '查询失败'
+        // })
         console.error('[restaurant] 查询失败：', err)
+        wx.hideLoading();
+        this.createRestaurantList()
       }
     })
+  },
+
+  // 创建列表
+  createRestaurantList: async function () {
+    wx.showLoading({
+      title: '加载中',
+    })
+
+    wx.cloud.callFunction({
+      name: 'createCollection',
+      data: { collection: this.restaurantTableName },
+      success: res => {
+        console.log('[restaurant] 创建成功: ', res.data)
+        wx.hideLoading();
+        this.getRestaurantList()
+      },
+      fail: err => {
+        console.error('[restaurant] 创建失败：', err)
+        wx.hideLoading();
+      }
+    })
+  },
+
+  // 切换列表类型
+  listTypeChange: function (e) {
+    const listType = e.detail.value ? 1 : 0;
+    this.setData({ listType });
+    this.restaurantTableName = listType ? this.publicRestaurantTableName : this.privateRestaurantTableName;
+    this.getRestaurantList();
   },
 
   // 添加数据
   addRestaurant: function (name) {
     const _this = this;
     const db = wx.cloud.database()
-    db.collection('restaurant').add({
+    wx.showLoading({
+      title: '加载中',
+    })
+    db.collection(this.restaurantTableName).add({
       data: {
         name: name
       },
@@ -63,6 +112,7 @@ Page({
         wx.showToast({
           title: '新增成功',
         })
+        wx.hideLoading();
         _this.getRestaurantList();
       },
       fail: err => {
@@ -71,6 +121,7 @@ Page({
           title: '新增失败'
         })
         console.error('[restaurant] 新增失败：', err)
+        wx.hideLoading();
       }
     })
   },
@@ -81,11 +132,15 @@ Page({
       const _this = this;
       const id = e.target.dataset.id;
       const db = wx.cloud.database();
-      db.collection('restaurant').doc(id).remove({
+      wx.showLoading({
+        title: '加载中',
+      })
+      db.collection(this.restaurantTableName).doc(id).remove({
         success: res => {
           wx.showToast({
             title: '删除成功',
           })
+          wx.hideLoading();
           _this.getRestaurantList();
         },
         fail: err => {
@@ -94,6 +149,7 @@ Page({
             title: '删除失败',
           })
           console.error('[restaurant] 删除失败', err)
+          wx.hideLoading();
         }
       });
     }
@@ -127,7 +183,7 @@ Page({
       })
       return;
     }
-    if (this.data.getting){
+    if (this.data.getting) {
       wx.showToast({
         icon: 'none',
         title: '正在进行中'
