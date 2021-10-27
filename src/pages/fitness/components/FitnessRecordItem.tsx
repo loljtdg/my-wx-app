@@ -27,7 +27,12 @@ export const FitnessRecordItem = ({ data }: Props) => {
             {`- ${action.name}`}
             {action.types.map(t => <View className="item-action-name-type">{t}</View>)}
           </View>
-          <View>{`${action.weight ? action.weight + "KG " : ""} ${action.times} X ${action.groups}`}  </View>
+          <View className="item-action-texts">
+            <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{`${action.weight ? action.weight + "KG " : ""} `}</View>
+            <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42), textAlign: 'right' }}>{action.times}</View>
+            <View className="item-action-texts-text">{` X `}</View>
+            <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42) }}>{action.groups}</View>
+          </View>
         </View>
       )}
     </View>

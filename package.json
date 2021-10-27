@@ -41,7 +41,6 @@
     "@tarojs/react": "3.3.0",
     "@tarojs/runtime": "3.3.0",
     "@tarojs/taro": "3.3.0",
-    "custom-calendar-taro": "^1.0.12",
     "dayjs": "^1.10.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

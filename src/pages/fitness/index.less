@@ -36,6 +36,7 @@ page {
   border-radius: 10px;
   background-color: #F6EABE80;
   padding: 20px;
+  margin-bottom: 20px;
 
   &-title {
     font-size: 34px;
@@ -44,7 +45,8 @@ page {
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
 
     &-time {
       font-size: 26px;
@@ -66,7 +68,7 @@ page {
     align-items: center;
     justify-content: space-between;
 
-    border-bottom: 2px solid #eeeeee;
+    border-bottom: 2px solid #dfdfdf;
 
     &-name {
       display: flex;
@@ -85,5 +87,10 @@ page {
       }
     }
 
+    &-texts {
+      display: flex;
+      flex-direction: row;
+      white-space: pre;
+    }
   }
 }

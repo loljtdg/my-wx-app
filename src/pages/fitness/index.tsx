@@ -9,10 +9,10 @@ import React, {
 import { View, Text, Button, Image, } from "@tarojs/components";
 import Taro, { useDidShow, usePullDownRefresh } from "@tarojs/taro";
 import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
-// import logo from "./hook.png";
-import Calendar from "custom-calendar-taro";
 import dayjs from "dayjs";
-import { ExtraInfo } from "custom-calendar-taro/src/components/Calendar/type";
+// import logo from "./hook.png";
+import Calendar from "../../components/Calendar";
+import { ExtraInfo } from "../../components/Calendar/type";
 
 import "./index.less";
 import {
@@ -43,7 +43,7 @@ const calendarStyles: Record<string, CSSProperties> = {
   }
 };
 
-const Index = () => {
+const Fitness = () => {
   const [selectDate, setSelectDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [extraInfo, setExtraInfo] = useState<ExtraInfo[]>([]);
   const dateFitnessRecordMapRef = useRef<Record<string, FitnessRecord[]>>({});
@@ -77,15 +77,12 @@ const Index = () => {
     if (res?.data?.length > 0) {
       GlobalData.fitnessRecords = res.data;
 
-      let newExtraInfo: ExtraInfo[] = [];
+
       const dateFitnessRecordMap: Record<string, FitnessRecord[]> = {};
 
       res.data.forEach((r: FitnessRecord) => {
         const dateStr = dayjs(r.date).format("YYYY-MM-DD");
-        newExtraInfo.push({
-          value: dateStr,
-          text: r.name
-        });
+
         if (!dateFitnessRecordMap[dateStr]) {
           dateFitnessRecordMap[dateStr] = [r];
         } else {
@@ -93,6 +90,13 @@ const Index = () => {
         }
       });
       dateFitnessRecordMapRef.current = dateFitnessRecordMap;
+      let newExtraInfo: ExtraInfo[] = Object.keys(dateFitnessRecordMap).map(key => {
+        const valueList = dateFitnessRecordMap[key]
+        return {
+          value: key,
+          text: valueList.map(v => v.name)
+        }
+      })
 
       setExtraInfo(newExtraInfo);
     }
@@ -128,4 +132,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Fitness;
