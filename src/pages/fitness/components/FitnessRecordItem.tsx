@@ -27,7 +27,7 @@ export const FitnessRecordItem = ({ data }: Props) => {
             {`- ${action.name}`}
             {action.types.map(t => <View className="item-action-name-type">{t}</View>)}
           </View>
-          <View>{`${action.times} X ${action.groups}`}  </View>
+          <View>{`${action.weight ? action.weight + "KG " : ""} ${action.times} X ${action.groups}`}  </View>
         </View>
       )}
     </View>

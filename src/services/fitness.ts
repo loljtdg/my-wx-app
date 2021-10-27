@@ -55,9 +55,13 @@ export const getFitnessRecord = () =>
 
 export const addFitnessRecord = (record: FitnessRecord) =>
   commonDbOpt(db =>
-    db
-      .collection(FitnessRecordCollectionName)
-      .add({ data: { ...record, _createDate: new Date().getTime() } })
+    db.collection(FitnessRecordCollectionName).add({
+      data: {
+        ...record,
+        _createTime: new Date().getTime(),
+        _updateTime: new Date().getTime()
+      }
+    })
   );
 
 export const deleteFitnessRecord = (record: FitnessRecord) =>
@@ -82,7 +86,8 @@ export const updateFitnessRecord = (record: FitnessRecord) =>
           data: {
             name: record.name,
             date: record.date,
-            actions: record.actions
+            actions: record.actions,
+            _updateTime: new Date().getTime()
           }
         })
     // })

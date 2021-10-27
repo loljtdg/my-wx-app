@@ -84,7 +84,7 @@ const Index = () => {
         const dateStr = dayjs(r.date).format("YYYY-MM-DD");
         newExtraInfo.push({
           value: dateStr,
-          text: "· " + r.name
+          text: r.name
         });
         if (!dateFitnessRecordMap[dateStr]) {
           dateFitnessRecordMap[dateStr] = [r];
@@ -108,7 +108,8 @@ const Index = () => {
             color: "#fff",
             borderRadius: 3,
             textAlign: "left",
-            fontSize: 12
+            fontSize: 11,
+            paddingLeft: 3,
           }
         })}
         marks={marks}

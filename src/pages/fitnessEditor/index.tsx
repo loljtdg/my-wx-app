@@ -132,7 +132,7 @@ const FitnessEditor = () => {
     if (type === 'add') {
       addFitnessRecord(newFitnessRecord as FitnessRecord).then(() => Taro.navigateBack());
     } else {
-      updateFitnessRecord(newFitnessRecord as FitnessRecord);
+      updateFitnessRecord(newFitnessRecord as FitnessRecord).then(() => Taro.navigateBack());
     }
   }
 
@@ -188,6 +188,9 @@ const FitnessEditor = () => {
             </View>
             <View className="row action-row">
               <View className="row-title">数量</View>
+              <Input className="input input-short" type="number" value={String(a.weight || '')} onInput={handleChangeAction(idx, 'weight')} />
+              <View className="margin-text">{`KG`}</View>
+              <View className="margin-text" />
               <Input className="input input-short" type="number" value={String(a.times || '')} onInput={handleChangeAction(idx, 'times')} />
               <View className="margin-text">{'次'}</View>
               <View className="margin-text">{`X`}</View>
