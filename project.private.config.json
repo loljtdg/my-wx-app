@@ -1,0 +1,30 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/fitness/index",
+          "pathName": "pages/fitness/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/fitnessEditor/index",
+          "pathName": "pages/fitnessEditor/index",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}
