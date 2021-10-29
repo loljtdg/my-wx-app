@@ -61,6 +61,18 @@ page {
   line-height: 50px;
   color: #F6D7A7;
   text-align: center;
+
+  margin-right: 30px;
+}
+
+.actions-history {
+  margin-left: 20px;
+  font-size: 32px;
+  line-height: 50px;
+  color: #fff;
+  background-color: #F6D7A7;
+  border-radius: 20px;
+  padding: 6px 20px;
 }
 
 .action {
@@ -128,4 +140,84 @@ page {
     width: 200px;
     border-radius: 30px;
   }
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+
+  &-close {
+    flex: 1;
+    background-color: #00000050;
+  }
+
+  &-content {
+    box-sizing: border-box;
+    padding: 30px;
+    background-color: #fff;
+    height: 75vh;
+    width: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    &-input {
+      margin-bottom: 30px;
+    }
+
+    .history-List {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+
+}
+
+.history-item {
+  padding: 30px;
+  font-size: 32px;
+  line-height: 42px;
+  color: #666;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 2px solid #dfdfdf;
+
+  .item-action {
+    &-name {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      &-type {
+        background-color: #F6D7A7;
+        padding: 2px 5px;
+        border-radius: 5px;
+
+        font-size: 26px;
+        line-height: 30px;
+        margin-left: 10px;
+        color: #999;
+      }
+    }
+
+    &-texts {
+      display: flex;
+      flex-direction: row;
+      white-space: pre;
+    }
+
+  }
+
 }

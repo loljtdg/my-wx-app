@@ -5,6 +5,7 @@ import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
 // import logo from "./hook.png";
 
 import "./index.less";
+import { checkAuth } from "../../utils";
 
 const items = [
   {
@@ -15,7 +16,9 @@ const items = [
 
 const Index = () => {
   useEffect(() => {
-    Taro.redirectTo({ url: "/pages/fitness/index" })
+    if (checkAuth()) {
+      Taro.redirectTo({ url: "/pages/fitness/index" })
+    }
   }, [])
   return (
     <View className="wrapper">

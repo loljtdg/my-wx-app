@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Taro from "@tarojs/taro";
 import "./app.less";
+import { checkAuth } from "./utils";
 
 const doUpdate = () => {
   const updateManager = Taro.getUpdateManager();
@@ -31,6 +32,9 @@ const doUpdate = () => {
 class App extends Component {
   componentDidMount() {
     doUpdate();
+    if (!checkAuth()) {
+      Taro.redirectTo({ url: "/pages/login/index" });
+    }
   }
 
   componentDidShow() {}
