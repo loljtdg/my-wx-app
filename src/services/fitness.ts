@@ -45,13 +45,37 @@ const commonDbOpt = async (func: (db: Taro.DB.Database) => Promise<any>) => {
   }
 };
 
-export const getFitnessRecord = () =>
-  commonDbOpt(db =>
+export const getFitnessRecord = async () => {
+  const MAX_LIMIT = 20
+  // 先取出集合记录总数
+  const countResult = await commonDbOpt(db =>
     db
       .collection(FitnessRecordCollectionName)
-      .orderBy("date", "asc")
-      .get()
+      .count()
   );
+  const total = countResult.total
+  // 计算需分几次取
+  const batchTimes = Math.ceil(total / MAX_LIMIT)
+  // 承载所有读操作的 promise 的数组
+  const tasks: Promise<any>[] = []
+  for (let i = 0; i < batchTimes; i++) {
+    const promise = commonDbOpt(db =>
+      db
+        .collection(FitnessRecordCollectionName)
+        .orderBy("date", "asc")
+        .skip(i * MAX_LIMIT)
+        .limit(MAX_LIMIT)
+        .get()
+    );
+    tasks.push(promise)
+  }
+  return (await Promise.all(tasks)).reduce((acc, cur) => {
+    return {
+      data: acc.data.concat(cur.data),
+      errMsg: acc.errMsg,
+    }
+  })
+}
 
 export const addFitnessRecord = (record: FitnessRecord) =>
   commonDbOpt(db =>
