@@ -42,7 +42,7 @@ const transformRecord2FormData = (
     return {
       ...(isTemp ? {} : { time: dayjs(record.date).format("HH:mm") }),
       name: record.name,
-      actions: record.actions
+      actions: record.actions?.filter(v => !!v)
     };
   }
   return {
@@ -198,7 +198,7 @@ const FitnessEditor = () => {
       "YYYY-MM-DD HH:mm"
     ).valueOf();
     newFitnessRecord.name = formData.name!;
-    newFitnessRecord.actions = formData.actions!;
+    newFitnessRecord.actions = formData.actions?.filter(v => !!v);
 
     if (type === "add") {
       addFitnessRecord(newFitnessRecord as FitnessRecord).then(() =>

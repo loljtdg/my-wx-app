@@ -22,18 +22,18 @@ export const FitnessRecordItem = ({ data }: Props) => {
     <View className="item" onClick={handleUpdate}>
       <View className="item-title">{data.name}<View className="item-title-time">{dayjs(data.date).format("HH:mm")}</View></View>
       {data.actions.map(action =>
-        <View className="item-action" key={action.name}>
-          <View className="item-action-name">
-            {`- ${action.name}`}
-            {action.types.map(t => <View className="item-action-name-type">{t}</View>)}
-          </View>
-          <View className="item-action-texts">
-            <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{`${action.weight ? action.weight + "KG " : ""} `}</View>
-            <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42), textAlign: 'right' }}>{action.times}</View>
-            <View className="item-action-texts-text">{` X `}</View>
-            <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42) }}>{action.groups}</View>
-          </View>
+      (action && <View className="item-action" key={action.name}>
+        <View className="item-action-name">
+          {`- ${action.name}`}
+          {action.types?.map(t => <View className="item-action-name-type">{t}</View>)}
         </View>
+        <View className="item-action-texts">
+          <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{`${action.weight ? action.weight + "KG " : ""} `}</View>
+          <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42), textAlign: 'right' }}>{action.times}</View>
+          <View className="item-action-texts-text">{` X `}</View>
+          <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42) }}>{action.groups}</View>
+        </View>
+      </View>)
       )}
     </View>
   );
