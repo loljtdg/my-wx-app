@@ -22,11 +22,12 @@ import {
 } from "../../services/fitness";
 import { FitnessRecordItem } from "./components/FitnessRecordItem";
 import GlobalData from "../../globalData";
+import { color } from "../../constant/color";
 
 const calendarStyles: Record<string, CSSProperties> = {
   headStyle: {
-    background: "#F6D7A780",
-    borderRadius: "10px 10px 0 0",
+    // background: color.main3,
+    borderRadius: "5px 5px 0 0",
     // border: "2px solid #f6f6f680",
     boxShadow: "0 0 5px RGBA(0,0,0,0.2)",
     borderBottom: "0",
@@ -34,8 +35,8 @@ const calendarStyles: Record<string, CSSProperties> = {
     margin: "0 5vw"
   },
   bodyStyle: {
-    background: "#f6f6f6",
-    borderRadius: "0 0 10px 10px",
+    background: color.bg,
+    borderRadius: "0 0 5px 5px",
     // border: "2px solid #f6f6f680",
     boxShadow: "0 0 5px RGBA(0,0,0,0.2)",
     width: "90vw",
@@ -50,17 +51,21 @@ const Fitness = () => {
 
   const marks = useMemo(
     () => [
-      { value: dayjs().format("YYYY-MM-DD"), color: "#87AAAA", markSize: "9px" }
+      { value: dayjs().format("YYYY-MM-DD"), color: color.main, markSize: "9px" }
     ],
     []
   );
 
   useDidShow(() => {
-    doGetFitnessRecord();
-    GlobalData.fitnessRecord = undefined;
+    if (GlobalData.reGetFitnessRecords) {
+      GlobalData.reGetFitnessRecords = false;
+      GlobalData.fitnessRecord = undefined;
+      doGetFitnessRecord();
+    }
   });
 
   usePullDownRefresh(() => {
+    GlobalData.fitnessRecord = undefined;
     doGetFitnessRecord();
   })
 
@@ -108,8 +113,9 @@ const Fitness = () => {
         {...calendarStyles}
         customStyleGenerator={() => ({
           extraInfoStyle: {
-            backgroundColor: "#F6D7A7",
-            color: "#fff",
+            backgroundColor: color.main4,
+            // border: '1px solid ' + color.main3,
+            color: color.main2,
             borderRadius: 3,
             textAlign: "left",
             fontSize: 11,
@@ -118,7 +124,7 @@ const Fitness = () => {
         })}
         marks={marks}
         extraInfo={extraInfo}
-        selectedDateColor="#C8E3D4"
+        selectedDateColor={color.main}
         onDayClick={item => setSelectDate(item.value)}
       // onDayLongPress={item => console.log(item)}
       />

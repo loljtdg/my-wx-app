@@ -27,6 +27,7 @@ import {
   FitnessRecordAction,
   updateFitnessRecord
 } from "../../services/fitness";
+import { toWeightString } from "../../utils";
 
 interface FormData {
   time: string;
@@ -69,7 +70,7 @@ const FitnessEditor = () => {
   const actionTempRange = useMemo(() => {
     let rangeArr: FitnessRecordAction[] = [];
 
-    GlobalData.fitnessRecords.reverse().forEach(r => {
+    GlobalData.fitnessRecords.forEach(r => {
       r.actions.forEach(a => {
         if (a && a.name) {
           rangeArr.push(a);
@@ -201,12 +202,16 @@ const FitnessEditor = () => {
     newFitnessRecord.actions = formData.actions?.filter(v => !!v);
 
     if (type === "add") {
-      addFitnessRecord(newFitnessRecord as FitnessRecord).then(() =>
+      addFitnessRecord(newFitnessRecord as FitnessRecord).then(() => {
+        GlobalData.reGetFitnessRecords = true;
         Taro.navigateBack()
+      }
       );
     } else {
-      updateFitnessRecord(newFitnessRecord as FitnessRecord).then(() =>
+      updateFitnessRecord(newFitnessRecord as FitnessRecord).then(() => {
+        GlobalData.reGetFitnessRecords = true;
         Taro.navigateBack()
+      }
       );
     }
   };
@@ -318,11 +323,11 @@ const FitnessEditor = () => {
               <View className="row-title">数量</View>
               <Input
                 className="input input-short"
-                type="number"
+                type="text"
                 value={String(a.weight || "")}
                 onInput={handleChangeAction(idx, "weight")}
               />
-              <View className="margin-text">{`KG`}</View>
+              <View className="margin-text" style={{ width: 30 }}>{Number(a.weight).toString() === String(a.weight) ? 'KG' : ''}</View>
               <View className="margin-text" />
               <Input
                 className="input input-short"
@@ -394,7 +399,7 @@ const FitnessEditor = () => {
                   {a.types.map(t => <View className="item-action-name-type">{t}</View>)}
                 </View>
                 <View className="item-action-texts">
-                  <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{`${a.weight ? a.weight + "KG " : ""} `}</View>
+                  <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{toWeightString(a.weight)}</View>
                   <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42), textAlign: 'right' }}>{a.times}</View>
                   <View className="item-action-texts-text">{` X `}</View>
                   <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42) }}>{a.groups}</View>

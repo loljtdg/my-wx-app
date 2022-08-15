@@ -2,6 +2,7 @@ import { View } from "@tarojs/components";
 import dayjs from "dayjs";
 import React from "react";
 import { FitnessRecord } from "src/services/fitness";
+import { toWeightString } from "../../../utils";
 import Taro from "@tarojs/taro";
 import GlobalData from "../../../globalData";
 
@@ -28,7 +29,7 @@ export const FitnessRecordItem = ({ data }: Props) => {
           {action.types?.map(t => <View className="item-action-name-type">{t}</View>)}
         </View>
         <View className="item-action-texts">
-          <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{`${action.weight ? action.weight + "KG " : ""} `}</View>
+          <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{toWeightString(action.weight)}</View>
           <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42), textAlign: 'right' }}>{action.times}</View>
           <View className="item-action-texts-text">{` X `}</View>
           <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42) }}>{action.groups}</View>
