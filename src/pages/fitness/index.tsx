@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { View, Text, Button, Image, } from "@tarojs/components";
+import { View, Text, Button, Image } from "@tarojs/components";
 import Taro, { useDidShow, usePullDownRefresh } from "@tarojs/taro";
 import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
 import dayjs from "dayjs";
@@ -23,6 +23,7 @@ import {
 import { FitnessRecordItem } from "./components/FitnessRecordItem";
 import GlobalData from "../../globalData";
 import { color } from "../../constant/color";
+import { Stopwatch } from "../../components/Stopwatch";
 
 const calendarStyles: Record<string, CSSProperties> = {
   headStyle: {
@@ -51,7 +52,11 @@ const Fitness = () => {
 
   const marks = useMemo(
     () => [
-      { value: dayjs().format("YYYY-MM-DD"), color: color.main, markSize: "9px" }
+      {
+        value: dayjs().format("YYYY-MM-DD"),
+        color: color.main,
+        markSize: "9px"
+      }
     ],
     []
   );
@@ -67,13 +72,13 @@ const Fitness = () => {
   usePullDownRefresh(() => {
     GlobalData.fitnessRecord = undefined;
     doGetFitnessRecord();
-  })
+  });
 
   const handleAdd = () => {
     Taro.navigateTo({
       url: `/pages/fitnessEditor/index?type=add&date=${selectDate}`
-    })
-  }
+    });
+  };
 
   const doGetFitnessRecord = async () => {
     const res = await getFitnessRecord().catch(e =>
@@ -81,7 +86,6 @@ const Fitness = () => {
     );
     if (res?.data?.length > 0) {
       GlobalData.fitnessRecords = res.data;
-
 
       const dateFitnessRecordMap: Record<string, FitnessRecord[]> = {};
 
@@ -95,13 +99,15 @@ const Fitness = () => {
         }
       });
       dateFitnessRecordMapRef.current = dateFitnessRecordMap;
-      let newExtraInfo: ExtraInfo[] = Object.keys(dateFitnessRecordMap).map(key => {
-        const valueList = dateFitnessRecordMap[key]
-        return {
-          value: key,
-          text: valueList.map(v => v.name)
+      let newExtraInfo: ExtraInfo[] = Object.keys(dateFitnessRecordMap).map(
+        key => {
+          const valueList = dateFitnessRecordMap[key];
+          return {
+            value: key,
+            text: valueList.map(v => v.name)
+          };
         }
-      })
+      );
 
       setExtraInfo(newExtraInfo);
     }
@@ -119,21 +125,25 @@ const Fitness = () => {
             borderRadius: 3,
             textAlign: "left",
             fontSize: 11,
-            paddingLeft: 3,
+            paddingLeft: 3
           }
         })}
         marks={marks}
         extraInfo={extraInfo}
         selectedDateColor={color.main}
         onDayClick={item => setSelectDate(item.value)}
-      // onDayLongPress={item => console.log(item)}
+        // onDayLongPress={item => console.log(item)}
       />
       <View className="list">
         {dateFitnessRecordMapRef.current?.[selectDate]?.map(r => (
           <FitnessRecordItem data={r} key={r._id} />
         ))}
       </View>
-      <View className="add-button" onClick={handleAdd}>+</View>
+      <View className="add-button" onClick={handleAdd}>
+        +
+      </View>
+
+      <Stopwatch />
     </View>
   );
 };

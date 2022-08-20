@@ -27,7 +27,7 @@ export const checkAuth = (value?: string) => {
   return false;
 };
 
-export const toWeightString = (weight?: string) => {
+export const toWeightString = (weight?: string | number) => {
   if (weight) {
     return Number(weight).toString() === String(weight)
       ? weight + "KG"

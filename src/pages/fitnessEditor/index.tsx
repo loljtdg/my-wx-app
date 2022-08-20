@@ -1,21 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  View,
-  Text,
-  Button,
-  Image,
-  Form,
-  Input,
-  Picker
-} from "@tarojs/components";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, Input, Picker } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import {
-  useEnv,
-  useNavigationBar,
-  useModal,
-  useToast,
-  useRouter
-} from "taro-hooks";
+import { useRouter } from "taro-hooks";
 
 import "./index.less";
 import dayjs from "dayjs";
@@ -28,6 +14,7 @@ import {
   updateFitnessRecord
 } from "../../services/fitness";
 import { toWeightString } from "../../utils";
+import { Stopwatch } from "../../components/Stopwatch";
 
 interface FormData {
   time: string;
@@ -89,10 +76,11 @@ const FitnessEditor = () => {
     return setArr;
   }, []);
 
+  const [showHistory, setShowHistory] = useState(false);
 
-  const [showHistory, setShowHistory] = useState(false)
-
-  const [actionTempRangeCurrent, setActionTempRangeCurrent] = useState(actionTempRange)
+  const [actionTempRangeCurrent, setActionTempRangeCurrent] = useState(
+    actionTempRange
+  );
 
   const [formData, setFormData] = useState(() =>
     transformRecord2FormData(GlobalData.fitnessRecord)
@@ -130,7 +118,6 @@ const FitnessEditor = () => {
   };
 
   const handleAddActionFromTemp = (action: FitnessRecordAction) => {
-
     formData.actions?.unshift({
       name: action.name,
       types: action.types && [...action.types],
@@ -139,7 +126,7 @@ const FitnessEditor = () => {
       groups: action.groups
     });
     setFormData({
-      ...formData,
+      ...formData
     });
     setShowHistory(false);
   };
@@ -204,45 +191,45 @@ const FitnessEditor = () => {
     if (type === "add") {
       addFitnessRecord(newFitnessRecord as FitnessRecord).then(() => {
         GlobalData.reGetFitnessRecords = true;
-        Taro.navigateBack()
-      }
-      );
+        Taro.navigateBack();
+      });
     } else {
       updateFitnessRecord(newFitnessRecord as FitnessRecord).then(() => {
         GlobalData.reGetFitnessRecords = true;
-        Taro.navigateBack()
-      }
-      );
+        Taro.navigateBack();
+      });
     }
   };
 
   const handleDelete = () => {
     if (GlobalData.fitnessRecord?._id) {
-      deleteFitnessRecord(GlobalData.fitnessRecord).then(() =>
-        Taro.navigateBack()
-      );
+      deleteFitnessRecord(GlobalData.fitnessRecord).then(() => {
+        GlobalData.reGetFitnessRecords = true;
+        Taro.navigateBack();
+      });
     }
   };
 
-
-  const handleHistorySearch = (event) => {
-    const search = event.detail.value
+  const handleHistorySearch = event => {
+    const search = event.detail.value;
     if (search) {
-      setActionTempRangeCurrent(actionTempRange.filter(a => {
-        let strings = a.name
-        if (a?.types?.length) {
-          a.types.forEach(t => {
-            if (t) {
-              strings += " " + t
-            }
-          })
-        }
-        return strings.includes(search)
-      }))
+      setActionTempRangeCurrent(
+        actionTempRange.filter(a => {
+          let strings = a.name;
+          if (a?.types?.length) {
+            a.types.forEach(t => {
+              if (t) {
+                strings += " " + t;
+              }
+            });
+          }
+          return strings.includes(search);
+        })
+      );
     } else {
-      setActionTempRangeCurrent(actionTempRange)
+      setActionTempRangeCurrent(actionTempRange);
     }
-  }
+  };
 
   console.log("formData", formData);
 
@@ -295,7 +282,9 @@ const FitnessEditor = () => {
             rangeKey="rangeKey"
             onChange={handleActionTemp}
           > */}
-          <View className="picker" onClick={() => setShowHistory(true)}>从历史动作添加</View>
+          <View className="picker" onClick={() => setShowHistory(true)}>
+            从历史动作添加
+          </View>
           {/* </Picker> */}
         </View>
 
@@ -327,7 +316,9 @@ const FitnessEditor = () => {
                 value={String(a.weight || "")}
                 onInput={handleChangeAction(idx, "weight")}
               />
-              <View className="margin-text" style={{ width: 30 }}>{Number(a.weight).toString() === String(a.weight) ? 'KG' : ''}</View>
+              <View className="margin-text" style={{ width: 30 }}>
+                {Number(a.weight).toString() === String(a.weight) ? "KG" : ""}
+              </View>
               <View className="margin-text" />
               <Input
                 className="input input-short"
@@ -380,35 +371,64 @@ const FitnessEditor = () => {
         </View>
       </View>
 
-      {showHistory && <View className="modal">
-        <View className="modal-close" onClick={() => setShowHistory(false)}>
-        </View>
-        <View className="modal-content">
-          <Input
-            className="input modal-content-input"
-            type="text"
-            onInput={handleHistorySearch}
-          />
+      {showHistory && (
+        <View className="modal">
+          <View
+            className="modal-close"
+            onClick={() => setShowHistory(false)}
+          ></View>
+          <View className="modal-content">
+            <Input
+              className="input modal-content-input"
+              type="text"
+              onInput={handleHistorySearch}
+            />
 
-          <View className="history-List">
-            {actionTempRangeCurrent.map(a =>
-              <View className="history-item" key={a.name} onClick={() => handleAddActionFromTemp(a)}>
-
-                <View className="item-action-name">
-                  {`${a.name}`}
-                  {a.types.map(t => <View className="item-action-name-type">{t}</View>)}
+            <View className="history-List">
+              {actionTempRangeCurrent.map(a => (
+                <View
+                  className="history-item"
+                  key={a.name}
+                  onClick={() => handleAddActionFromTemp(a)}
+                >
+                  <View className="item-action-name">
+                    {`${a.name}`}
+                    {a.types.map(t => (
+                      <View className="item-action-name-type">{t}</View>
+                    ))}
+                  </View>
+                  <View className="item-action-texts">
+                    <View
+                      className="item-action-texts-text"
+                      style={{ minWidth: Taro.pxTransform(100) }}
+                    >
+                      {toWeightString(a.weight)}
+                    </View>
+                    <View
+                      className="item-action-texts-text"
+                      style={{
+                        minWidth: Taro.pxTransform(42),
+                        textAlign: "right"
+                      }}
+                    >
+                      {a.times}
+                    </View>
+                    <View className="item-action-texts-text">{` X `}</View>
+                    <View
+                      className="item-action-texts-text"
+                      style={{ minWidth: Taro.pxTransform(42) }}
+                    >
+                      {a.groups}
+                    </View>
+                  </View>
                 </View>
-                <View className="item-action-texts">
-                  <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(100) }}>{toWeightString(a.weight)}</View>
-                  <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42), textAlign: 'right' }}>{a.times}</View>
-                  <View className="item-action-texts-text">{` X `}</View>
-                  <View className="item-action-texts-text" style={{ minWidth: Taro.pxTransform(42) }}>{a.groups}</View>
-                </View>
-              </View>)}
+              ))}
+            </View>
           </View>
         </View>
-      </View>
-      }
+      )}
+
+      <Stopwatch />
     </View>
   );
 };
