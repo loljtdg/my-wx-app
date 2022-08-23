@@ -311,6 +311,7 @@ const FitnessEditor = () => {
             <View className="row action-row">
               <View className="row-title">数量</View>
               <Input
+                style={{ width: Taro.pxTransform(85) }}
                 className="input input-short"
                 type="text"
                 value={String(a.weight || "")}
