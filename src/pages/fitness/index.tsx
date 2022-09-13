@@ -24,6 +24,7 @@ import { FitnessRecordItem } from "./components/FitnessRecordItem";
 import GlobalData from "../../globalData";
 import { color } from "../../constant/color";
 import { Stopwatch } from "../../components/Stopwatch";
+import { openDbFile, saveDbFile, selectDbFile } from "../../db";
 
 const calendarStyles: Record<string, CSSProperties> = {
   headStyle: {
@@ -82,14 +83,14 @@ const Fitness = () => {
 
   const doGetFitnessRecord = async () => {
     const res = await getFitnessRecord().catch(e =>
-      console.log("getFitnessRecord e", e)
+      console.warn("getFitnessRecord e", e)
     );
-    if (res?.data?.length > 0) {
-      GlobalData.fitnessRecords = res.data;
+    if (res && res.length > 0) {
+      GlobalData.fitnessRecords = res as any;
 
       const dateFitnessRecordMap: Record<string, FitnessRecord[]> = {};
 
-      res.data.forEach((r: FitnessRecord) => {
+      GlobalData.fitnessRecords.forEach((r: FitnessRecord) => {
         const dateStr = dayjs(r.date).format("YYYY-MM-DD");
 
         if (!dateFitnessRecordMap[dateStr]) {
@@ -132,13 +133,37 @@ const Fitness = () => {
         extraInfo={extraInfo}
         selectedDateColor={color.main}
         onDayClick={item => setSelectDate(item.value)}
-        // onDayLongPress={item => console.log(item)}
+      // onDayLongPress={item => console.log(item)}
       />
       <View className="list">
         {dateFitnessRecordMapRef.current?.[selectDate]?.map(r => (
           <FitnessRecordItem data={r} key={r._id} />
         ))}
       </View>
+
+      <View className="file" onClick={
+        () => Taro.showActionSheet({
+          itemList: ['导出数据文件', '导入数据文件'],
+          success(res) {
+            switch (res?.tapIndex) {
+              case 0:
+                saveDbFile()
+                break;
+              case 1:
+                selectDbFile()
+                break;
+              default:
+                break;
+            }
+          },
+          fail(res) {
+            console.warn(res.errMsg)
+          }
+        })
+      }>
+        数据
+      </View>
+
       <View className="add-button" onClick={handleAdd}>
         +
       </View>

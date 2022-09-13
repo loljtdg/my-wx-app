@@ -231,7 +231,7 @@ const FitnessEditor = () => {
     }
   };
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   return (
     <View className="wrapper">

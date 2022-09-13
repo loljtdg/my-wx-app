@@ -130,7 +130,7 @@ export const Stopwatch = () => {
   };
 
   const handleTouchEnd = (event: ITouchEvent) => {
-    console.log("handleTouchEnd", event);
+    // console.log("handleTouchEnd", event);
     Taro.setStorage({
       key: IsRightNotLeftKey,
       data: isRightNotLeft

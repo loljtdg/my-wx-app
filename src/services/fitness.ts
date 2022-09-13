@@ -1,6 +1,17 @@
 import Taro from "@tarojs/taro";
+import { db } from "../db";
 
 const FitnessRecordCollectionName = "fitness_record";
+
+export function generateId() {
+  let str = new Date().valueOf().toString(16);
+  const randomNum = 32 - str.length;
+  for (let i = 0; i < randomNum; i++) {
+    str += Math.floor(Math.random() * 16).toString(16);
+  }
+
+  return str;
+}
 
 export interface FitnessRecordAction {
   name: string;
@@ -19,18 +30,17 @@ export interface FitnessRecord {
   actions: FitnessRecordAction[];
 }
 
-const commonDbOpt = async (func: (db: Taro.DB.Database) => Promise<any>) => {
+const commonDbOpt = async (func: () => Promise<any>) => {
   Taro.showLoading({
     title: "loading"
   });
-  const db = Taro.cloud.database();
 
   let error;
-  const res = await func(db).catch(e => {
+  const res = await func().catch(e => {
     error = e;
   });
   Taro.hideLoading();
-  if (res) {
+  if (!error) {
     Taro.showToast({
       icon: "none",
       title: "成功"
@@ -46,73 +56,47 @@ const commonDbOpt = async (func: (db: Taro.DB.Database) => Promise<any>) => {
 };
 
 export const getFitnessRecord = async () => {
-  const MAX_LIMIT = 20
-  // 先取出集合记录总数
-  const countResult = await commonDbOpt(db =>
-    db
-      .collection(FitnessRecordCollectionName)
-      .count()
-  );
-  const total = countResult.total
-  // 计算需分几次取
-  const batchTimes = Math.ceil(total / MAX_LIMIT)
-  // 承载所有读操作的 promise 的数组
-  const tasks: Promise<any>[] = []
-  for (let i = 0; i < batchTimes; i++) {
-    const promise = commonDbOpt(db =>
-      db
-        .collection(FitnessRecordCollectionName)
-        .orderBy("date", "asc")
-        .skip(i * MAX_LIMIT)
-        .limit(MAX_LIMIT)
-        .get()
-    );
-    tasks.push(promise)
+  if (!db.getCollection(FitnessRecordCollectionName)) {
+    db.addCollection(FitnessRecordCollectionName);
   }
-  return (await Promise.all(tasks)).reduce((acc, cur) => {
-    return {
-      data: acc.data.concat(cur.data),
-      errMsg: acc.errMsg,
-    }
-  })
-}
+  return db
+    .getCollection<FitnessRecord>(FitnessRecordCollectionName)
+    .chain()
+    .data();
+};
 
 export const addFitnessRecord = (record: FitnessRecord) =>
-  commonDbOpt(db =>
-    db.collection(FitnessRecordCollectionName).add({
-      data: {
-        ...record,
-        _createTime: new Date().getTime(),
-        _updateTime: new Date().getTime()
-      }
-    })
-  );
+  commonDbOpt(async () => {
+    return db.getCollection<FitnessRecord>(FitnessRecordCollectionName).insert({
+      ...record,
+      _createTime: new Date().getTime(),
+      _updateTime: new Date().getTime(),
+      _id: generateId()
+    });
+  });
 
 export const deleteFitnessRecord = (record: FitnessRecord) =>
-  commonDbOpt(
-    db =>
-      // new Promise((resolve, reject) => {
-      db
-        .collection(FitnessRecordCollectionName)
-        .doc(record._id!)
-        .remove({})
-    // })
-  );
+  commonDbOpt(async () => {
+    return db
+      .getCollection<FitnessRecord>(FitnessRecordCollectionName)
+      .findAndRemove({
+        _id: record._id
+      });
+  });
 
 export const updateFitnessRecord = (record: FitnessRecord) =>
-  commonDbOpt(
-    db =>
-      // new Promise((resolve, reject) => {
-      db
-        .collection(FitnessRecordCollectionName)
-        .doc(record._id!)
-        .update({
-          data: {
-            name: record.name,
-            date: record.date,
-            actions: record.actions,
-            _updateTime: new Date().getTime()
-          }
-        })
-    // })
-  );
+  commonDbOpt(async () => {
+    return db
+      .getCollection<FitnessRecord>(FitnessRecordCollectionName)
+      .findAndUpdate(
+        {
+          _id: record._id
+        },
+        oldRecord => {
+          oldRecord._updateTime = new Date().getTime();
+          oldRecord.name = record.name;
+          oldRecord.date = record.date;
+          oldRecord.actions = record.actions;
+        }
+      );
+  });
