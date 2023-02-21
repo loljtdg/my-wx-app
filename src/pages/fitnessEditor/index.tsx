@@ -27,6 +27,9 @@ const transformRecord2FormData = (
   isTemp?: boolean
 ): Partial<FormData> => {
   if (record) {
+    if (isTemp) {
+      record = JSON.parse(JSON.stringify(record)) as FitnessRecord;
+    }
     return {
       ...(isTemp ? {} : { time: dayjs(record.date).format("HH:mm") }),
       name: record.name,
@@ -118,6 +121,7 @@ const FitnessEditor = () => {
   };
 
   const handleAddActionFromTemp = (action: FitnessRecordAction) => {
+    action = JSON.parse(JSON.stringify(action));
     formData.actions?.unshift({
       name: action.name,
       types: action.types && [...action.types],
